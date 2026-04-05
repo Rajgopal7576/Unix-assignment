@@ -28,7 +28,7 @@ WEATHER_API_KEY=your_key docker-compose up
 
 ## Project Structure
 ```
-weatherapp/
+weatherweb/
 ├── manage.py
 ├── requirements.txt
 ├── Dockerfile
