@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search History — SkyPulse</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #070b14;
+            --glass: rgba(12, 18, 35, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #4f9cf9;
+            --text: #f0f4ff;
+            --text-muted: rgba(240, 244, 255, 0.45);
+            --radius: 20px;
+            --radius-sm: 12px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(79, 156, 249, 0.10) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 28px 0 40px;
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #4f9cf9, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-left: 24px;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--text);
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .history-table th {
+            text-align: left;
+            font-family: 'Syne', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 0 16px 12px;
+        }
+
+        .history-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.875rem;
+        }
+
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .history-table tr {
+            transition: background 0.2s;
+        }
+
+        .history-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 8px;
+            margin-bottom: 40px;
+        }
+
+        .city-name {
+            font-weight: 600;
+        }
+
+        .temp-val {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 24px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">SkyPulse</div>
+            <nav>
+                <a href="{% url 'index' %}">← Back to Home</a>
+            </nav>
+        </header>
+
+        <h1>Search History</h1>
+        <p class="subtitle">Your last 50 weather lookups stored in SQLite.</p>
+
+        <div class="glass-card">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>City</th>
+                        <th>Country</th>
+                        <th>Temp</th>
+                        <th>Condition</th>
+                        <th>Humidity</th>
+                        <th>Wind</th>
+                        <th>Searched At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in searches %}
+                    <tr>
+                        <td><span class="city-name">{{ s.city_name }}</span></td>
+                        <td>{{ s.country_code }}</td>
+                        <td><span class="temp-val">{{ s.temperature }}°C</span></td>
+                        <td>{{ s.weather_condition }}</td>
+                        <td>{{ s.humidity }}%</td>
+                        <td>{{ s.wind_speed }} km/h</td>
+                        <td style="color:var(--text-muted); font-size:0.8rem;">{{ s.searched_at|date:"d M Y, H:i" }}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7"
+                            style="text-align:center; padding:40px; color:var(--text-muted); font-style:italic;">No
+                            search history yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <footer>SkyPulse — CS515 Unix Programming · IIIT Trichy</footer>
+    </div>
+</body>
+
+</html>
