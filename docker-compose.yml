@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - WEATHER_API_KEY=${WEATHER_API_KEY:-YOUR_API_KEY_HERE}
+      - DJANGO_SETTINGS_MODULE=weatherproject.settings
+    volumes:
+      - sqlite_data:/app
+    restart: unless-stopped
+
+volumes:
+  sqlite_data:
