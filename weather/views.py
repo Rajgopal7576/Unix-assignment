@@ -125,6 +125,7 @@ def index(request):
     # Get recent searches and favorites
     recent_searches = SearchHistory.objects.all()[:8]
     favorite_cities = FavoriteCity.objects.all()
+    favorite_city_names = [f.city_name for f in favorite_cities]
     
     context = {
         'weather_data': weather_data,
@@ -133,9 +134,10 @@ def index(request):
         'city': city,
         'recent_searches': recent_searches,
         'favorite_cities': favorite_cities,
+        'favorite_city_names': favorite_city_names,
     }
     
-    return render(request, 'weather/index.html', context)
+    return render(request, 'weatherfront/index.html', context)
 
 
 @require_http_methods(["POST"])
@@ -167,4 +169,4 @@ def remove_favorite(request):
 def history(request):
     """View search history."""
     searches = SearchHistory.objects.all()[:50]
-    return render(request, 'weather/history.html', {'searches': searches})
+    return render(request, 'weatherfront/history.html', {'searches': searches})

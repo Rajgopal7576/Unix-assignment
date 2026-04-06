@@ -157,12 +157,25 @@
             margin-bottom: 40px;
         }
 
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .glass-card {
             background: var(--glass);
             backdrop-filter: blur(24px);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             padding: 32px;
+            animation: fadeInUp 0.6s ease-out forwards;
         }
 
         .current-weather {
@@ -208,7 +221,10 @@
             margin: 20px 0;
             background: linear-gradient(to bottom, #fff, rgba(255, 255, 255, 0.7));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
+            color: transparent;
+            /* Fallback for browsers that do not support -webkit-text-fill-color */
         }
 
         .weather-details {
@@ -461,11 +477,14 @@
                     <div class="weather-info">
                         <h2>
                             {{ weather_data.city }}, {{ weather_data.country }}
-                            {% if weather_data.city in favorite_cities|stringformat:"s" %}
-                            <!-- Since we don't have a simple contains check without a custom template tag easily, we'll let user toggle. -->
-                            {% endif %}
+                            {% if weather_data.city in favorite_city_names %}
+                            <button class="fav-btn fav-active"
+                                onclick="removeFavorite('{{ weather_data.city }}', event)"
+                                title="Remove from favorites">★</button>
+                            {% else %}
                             <button class="fav-btn fav-add" onclick="addFavorite('{{ weather_data.city }}')"
                                 title="Add to favorites">★</button>
+                            {% endif %}
                         </h2>
                         <p>{{ weather_data.condition }}</p>
                     </div>
