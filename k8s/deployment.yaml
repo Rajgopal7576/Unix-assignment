@@ -22,7 +22,7 @@ spec:
             - containerPort: 8000
           env:
             - name: WEATHER_API_KEY
-              value: "YOUR_API_KEY_HERE"   # replace with your key
+              value: "5926157dbbb51a83853152b24cb0c6ab"
             - name: DJANGO_SETTINGS_MODULE
               value: "weatherproject.settings"
           resources:
