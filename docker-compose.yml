@@ -6,7 +6,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - WEATHER_API_KEY=${WEATHER_API_KEY:-YOUR_API_KEY_HERE}
+      - WEATHER_API_KEY=5926157dbbb51a83853152b24cb0c6ab
       - DJANGO_SETTINGS_MODULE=weatherproject.settings
     volumes:
       - sqlite_data:/app

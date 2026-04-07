@@ -69,4 +69,4 @@ USE_I18N = True
 USE_TZ = True
 
 # OpenWeatherMap API Key - replace with your own free key from openweathermap.org
-WEATHER_API_KEY = os.environ.get('WEATHER_API_KEY', 'YOUR_API_KEY_HERE')
+WEATHER_API_KEY = '5926157dbbb51a83853152b24cb0c6ab'
