@@ -19,12 +19,34 @@ A two-tier weather web application built with **Django** (backend) + **SQLite** 
 - **API**: OpenWeatherMap
 
 ## Quick Start
+
+### Using Docker Compose (Recommended for Local Dev)
 ```bash
-# 1. Get free API key from https://openweathermap.org/api
-# 2. Run with Docker Compose
-WEATHER_API_KEY=your_key docker-compose up
-# 3. Visit http://localhost:8000
+# 1. Run in detached mode and build the container
+docker-compose up -d --build
+# 2. Visit http://localhost:8000
 ```
+
+### Using Kubernetes (Minikube)
+```bash
+# 1. Start Minikube & use its Docker daemon
+minikube start
+eval $(minikube docker-env)
+
+# 2. Build the image locally
+docker build -t skypulse:latest .
+
+# 3. Apply the deployment and service manifests
+kubectl apply -f k8s/
+
+# 4. Access the application
+minikube service skypulse-service --url
+```
+
+## Changing the API Key
+A default OpenWeatherMap API key is currently bundled with the project for convenience. To update it with your own key, modify the `WEATHER_API_KEY` variable in the following two files:
+- `docker-compose.yml`
+- `k8s/deployment.yaml`
 
 ## Project Structure
 ```
@@ -41,7 +63,7 @@ weatherweb/
 │   ├── models.py         # SearchHistory, FavoriteCity
 │   ├── views.py          # Weather API logic
 │   ├── urls.py
-│   └── templates/weather/
+│   └── templates/weatherfront/
 │       ├── index.html
 │       └── history.html
 └── k8s/
